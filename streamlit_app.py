@@ -1,316 +1,573 @@
 import streamlit as st
 from openai import OpenAI
 
-# --------------------------------------------------
-# 페이지 설정
-# --------------------------------------------------
+
+# ==================================================
+# PAGE CONFIG
+# ==================================================
 
 st.set_page_config(
-    page_title="AI Prompt Expander",
+    page_title="Promptly AI",
     page_icon="✨",
-    layout="centered"
+    layout="wide",
+    initial_sidebar_state="collapsed"
 )
 
-st.title("✨ AI Prompt Expander")
 
-st.write(
-    """
-    작성한 프롬프트를 AI가 분석하고,
-    의도를 유지하면서 더 구체적이고 명확한 프롬프트로 확장해줍니다.
-    """
-)
+# ==================================================
+# CUSTOM CSS
+# ==================================================
 
-# --------------------------------------------------
-# API KEY
-# --------------------------------------------------
+st.markdown("""
+<style>
 
-openai_api_key = st.text_input(
-    "OpenAI API Key",
-    type="password"
-)
+    /* 전체 배경 */
+    .stApp {
+        background:
+            radial-gradient(
+                circle at 50% -20%,
+                rgba(124, 92, 255, 0.18),
+                transparent 40%
+            ),
+            #09090b;
+        color: #f4f4f5;
+    }
 
-if not openai_api_key:
-    st.info(
-        "OpenAI API Key를 입력해주세요.",
-        icon="🔑"
+    /* 기본 컨테이너 */
+    .block-container {
+        max-width: 1050px;
+        padding-top: 40px;
+        padding-bottom: 80px;
+    }
+
+    /* 헤더 */
+    .brand {
+        text-align: center;
+        margin-top: 25px;
+        margin-bottom: 8px;
+    }
+
+    .brand-title {
+        font-size: 42px;
+        font-weight: 800;
+        letter-spacing: -1.5px;
+        background: linear-gradient(
+            90deg,
+            #ffffff,
+            #b8a7ff
+        );
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+
+    .brand-subtitle {
+        color: #a1a1aa;
+        font-size: 16px;
+        margin-top: 8px;
+    }
+
+    /* 카드 */
+    .card {
+        background: rgba(24, 24, 27, 0.85);
+        border: 1px solid rgba(255,255,255,0.08);
+        border-radius: 20px;
+        padding: 26px;
+        margin-top: 28px;
+        box-shadow:
+            0 20px 60px rgba(0,0,0,0.25);
+        backdrop-filter: blur(20px);
+    }
+
+    .card-title {
+        font-size: 18px;
+        font-weight: 700;
+        margin-bottom: 5px;
+    }
+
+    .card-description {
+        font-size: 13px;
+        color: #a1a1aa;
+        margin-bottom: 18px;
+    }
+
+    /* textarea */
+    textarea {
+        background: #111113 !important;
+        color: #f4f4f5 !important;
+        border: 1px solid #27272a !important;
+        border-radius: 14px !important;
+        font-size: 16px !important;
+        line-height: 1.7 !important;
+    }
+
+    textarea:focus {
+        border: 1px solid #8b5cf6 !important;
+        box-shadow: 0 0 0 1px #8b5cf6 !important;
+    }
+
+    /* 버튼 */
+    .stButton > button {
+        width: 100%;
+        border-radius: 12px;
+        height: 50px;
+        border: 0;
+        font-size: 15px;
+        font-weight: 700;
+        background: linear-gradient(
+            135deg,
+            #7c3aed,
+            #8b5cf6
+        );
+        color: white;
+        transition: 0.2s;
+    }
+
+    .stButton > button:hover {
+        transform: translateY(-1px);
+        box-shadow:
+            0 10px 30px rgba(124,58,237,0.35);
+    }
+
+    /* 결과 박스 */
+    .result-header {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 14px;
+    }
+
+    .result-icon {
+        width: 34px;
+        height: 34px;
+        border-radius: 10px;
+        background: rgba(139,92,246,0.15);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 17px;
+    }
+
+    .result-title {
+        font-size: 19px;
+        font-weight: 700;
+    }
+
+    .badge {
+        display: inline-block;
+        margin-left: 8px;
+        padding: 4px 9px;
+        border-radius: 20px;
+        background: rgba(139,92,246,0.15);
+        color: #c4b5fd;
+        font-size: 11px;
+        font-weight: 600;
+    }
+
+    /* 안내 */
+    .tip {
+        background: rgba(255,255,255,0.03);
+        border: 1px solid rgba(255,255,255,0.06);
+        border-radius: 14px;
+        padding: 15px 18px;
+        color: #a1a1aa;
+        font-size: 13px;
+        line-height: 1.6;
+        margin-top: 20px;
+    }
+
+    /* 예시 */
+    .example {
+        background: rgba(255,255,255,0.025);
+        border: 1px solid rgba(255,255,255,0.06);
+        border-radius: 12px;
+        padding: 13px 15px;
+        margin-top: 8px;
+        color: #d4d4d8;
+        font-size: 13px;
+    }
+
+    /* Streamlit 기본 요소 */
+    [data-testid="stToolbar"] {
+        visibility: hidden;
+    }
+
+    footer {
+        visibility: hidden;
+    }
+
+    #MainMenu {
+        visibility: hidden;
+    }
+
+    /* selectbox */
+    div[data-baseweb="select"] > div {
+        background: #111113;
+        border-color: #27272a;
+        border-radius: 10px;
+    }
+
+</style>
+""", unsafe_allow_html=True)
+
+
+# ==================================================
+# OPENAI
+# ==================================================
+
+try:
+    OPENAI_API_KEY = st.secrets["OPENAI_API_KEY"]
+except Exception:
+    OPENAI_API_KEY = None
+
+
+if not OPENAI_API_KEY:
+
+    st.error(
+        """
+        OpenAI API Key가 설정되지 않았습니다.
+
+        `.streamlit/secrets.toml`에 다음과 같이 설정해주세요.
+
+        `OPENAI_API_KEY = "sk-xxxxxxxx"`
+        """
     )
+
     st.stop()
 
-client = OpenAI(api_key=openai_api_key)
+
+client = OpenAI(api_key=OPENAI_API_KEY)
 
 
-# --------------------------------------------------
-# 사이드바 설정
-# --------------------------------------------------
+# ==================================================
+# HEADER
+# ==================================================
 
-st.sidebar.header("✨ Prompt 설정")
+st.markdown("""
+<div class="brand">
 
-prompt_style = st.sidebar.selectbox(
-    "프롬프트 확장 방식",
-    [
-        "자동",
-        "간결하게",
-        "상세하게",
-        "전문적으로",
-        "실행 중심"
-    ]
+    <div class="brand-title">
+        ✨ Promptly AI
+    </div>
+
+    <div class="brand-subtitle">
+        당신의 짧은 아이디어를 강력한 AI 프롬프트로 바꿔드립니다.
+    </div>
+
+</div>
+""", unsafe_allow_html=True)
+
+
+# ==================================================
+# PROMPT INPUT
+# ==================================================
+
+st.markdown("""
+<div class="card">
+
+    <div class="card-title">
+        📝 프롬프트 입력
+    </div>
+
+    <div class="card-description">
+        AI에게 요청하고 싶은 내용을 자유롭게 작성해주세요.
+        짧게 작성해도 AI가 필요한 내용을 분석해서 보완합니다.
+    </div>
+
+</div>
+""", unsafe_allow_html=True)
+
+
+user_prompt = st.text_area(
+    "",
+    height=190,
+    placeholder="""예시:
+유튜브 채널 아이디어를 만들어줘
+
+또는
+
+우리 회사의 AI 서비스를 투자자에게 설명하는
+PPT를 만들어줘""",
+    label_visibility="collapsed"
 )
 
-output_language = st.sidebar.selectbox(
-    "출력 언어",
-    [
-        "한국어",
-        "English"
-    ]
-)
+
+# ==================================================
+# SETTINGS
+# ==================================================
+
+col1, col2, col3 = st.columns([1.3, 1.3, 1])
+
+with col1:
+
+    expansion_style = st.selectbox(
+        "확장 스타일",
+        [
+            "자동",
+            "간결하게",
+            "상세하게",
+            "전문적으로",
+            "실행 중심"
+        ]
+    )
 
 
-# --------------------------------------------------
-# AI 역할 설정
-# --------------------------------------------------
+with col2:
+
+    target_ai = st.selectbox(
+        "사용할 AI",
+        [
+            "범용 AI",
+            "ChatGPT",
+            "Claude",
+            "Gemini"
+        ]
+    )
+
+
+with col3:
+
+    output_language = st.selectbox(
+        "프롬프트 언어",
+        [
+            "한국어",
+            "English"
+        ]
+    )
+
+
+# ==================================================
+# SYSTEM PROMPT
+# ==================================================
 
 SYSTEM_PROMPT = f"""
 당신은 세계 최고 수준의 Prompt Engineer입니다.
 
-당신의 역할은 사용자가 작성한 짧거나 불완전한 프롬프트를 분석하고,
-사용자의 원래 의도는 절대 변경하지 않으면서
-AI가 더 정확하고 높은 품질의 결과를 생성할 수 있도록
-프롬프트를 구조적으로 확장하는 것입니다.
+사용자가 입력한 원본 프롬프트를 분석하고,
+사용자의 의도와 목적을 유지하면서
+AI가 훨씬 정확하고 높은 품질의 결과를 만들 수 있도록
+프롬프트를 확장하고 개선하세요.
 
-현재 프롬프트 확장 방식:
-{prompt_style}
+현재 설정:
+
+확장 스타일:
+{expansion_style}
+
+사용 대상 AI:
+{target_ai}
 
 출력 언어:
 {output_language}
 
 
-## 핵심 원칙
+━━━━━━━━━━━━━━━━━━━━━━━━━━
+핵심 원칙
+━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-1. 사용자의 원래 의도를 반드시 유지하세요.
+1. 사용자의 원래 의도를 절대 변경하지 마세요.
 
-2. 사용자가 작성하지 않은 구체적인 사실을 임의로 만들어내지 마세요.
+2. 사용자가 요청하지 않은 내용을 임의의 사실로 만들어내지 마세요.
 
-3. 부족한 정보가 있더라도 무조건 질문하지 말고,
-   AI가 합리적으로 처리할 수 있는 부분은 프롬프트 내부에서
-   명확한 지침으로 보완하세요.
+3. 단순한 요청에는 불필요하게 복잡한 프롬프트를 만들지 마세요.
 
-4. 필요한 경우 다음 요소를 추가하세요.
+4. 복잡한 요청이라면 다음 요소를 적절하게 추가하세요.
 
-   - AI의 역할(Role)
-   - 작업 목적(Goal)
-   - 작업 배경(Context)
-   - 수행해야 할 작업(Task)
-   - 대상 사용자(Target Audience)
-   - 입력 데이터(Input)
-   - 결과물(Output)
-   - 출력 형식(Output Format)
-   - 스타일(Style)
-   - 제약조건(Constraints)
-   - 평가 기준(Criteria)
-   - 작업 절차(Process)
-   - 주의사항(Requirements)
+- Role
+- Context
+- Goal
+- Task
+- Target Audience
+- Input
+- Process
+- Output Format
+- Constraints
+- Evaluation Criteria
+- Tone / Style
+- Requirements
 
-5. 사용자의 요청이 애매하다면
-   AI가 합리적인 가정을 하도록 지시를 추가할 수 있습니다.
+5. AI가 작업을 수행할 때 필요한 정보가 부족하다면
+   사용자가 직접 입력할 수 있도록 [ ] 형태의 placeholder를 사용하세요.
 
-6. 결과물이 필요한 경우 결과물의 형식을 구체적으로 정의하세요.
+예:
 
-7. 복잡한 작업이라면 AI가 단계적으로 작업하도록 지시하세요.
+[타겟 고객]
+[예산]
+[브랜드명]
+[서비스 설명]
 
-8. 단순한 요청에는 불필요하게 복잡한 프롬프트를 만들지 마세요.
+6. 숫자나 사실을 임의로 만들어내지 마세요.
 
-9. 프롬프트를 확장하는 것이 목적이므로
-   실제 작업의 결과를 생성하지 마세요.
+7. 사용자가 원하는 결과물이 있다면
+   결과물의 구조와 형식을 구체적으로 정의하세요.
 
-10. 설명보다 최종적으로 사용할 수 있는
-    완성된 프롬프트를 가장 중요하게 제공하세요.
+8. 복잡한 작업이라면 AI가 내부적으로 작업 순서를 고려하도록
+   명확한 작업 절차를 정의하세요.
 
+9. 최종 프롬프트는 다른 AI에 그대로 복사해서 사용할 수 있어야 합니다.
 
-## 프롬프트 확장 방식
-
-### 자동
-사용자의 요청을 분석하여 필요한 요소만 자동으로 추가합니다.
-
-### 간결하게
-핵심 지침만 추가하여 짧고 효율적인 프롬프트를 만듭니다.
-
-### 상세하게
-역할, 배경, 목표, 작업 과정, 출력 형식, 제약조건 등을
-가능한 한 구체적으로 정의합니다.
-
-### 전문적으로
-전문가가 실제 업무에서 사용할 수 있는 수준으로
-정교하고 구조적인 프롬프트를 작성합니다.
-
-### 실행 중심
-AI가 실제 결과물을 만들어낼 수 있도록
-구체적인 작업 절차와 출력 기준을 중심으로 작성합니다.
+10. 실제 작업 결과를 생성하지 마세요.
+    당신의 역할은 '프롬프트를 만드는 것'입니다.
 
 
-## 출력 형식
+━━━━━━━━━━━━━━━━━━━━━━━━━━
+출력 형식
+━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-반드시 다음 형식을 사용하세요.
+반드시 다음 구조로 답변하세요.
 
 ### ✨ 확장된 프롬프트
 
-[최종적으로 복사해서 사용할 수 있는 프롬프트]
+완성된 프롬프트를 작성하세요.
 
-### 🔍 추가된 요소
+이 부분은 사용자가 그대로 복사해서
+다른 AI에 입력할 수 있어야 합니다.
 
-- 어떤 부분을 보완했는지
-- 왜 해당 요소를 추가했는지
+
+### 🔍 개선된 부분
+
+원본 프롬프트에서 어떤 부분을 보완했는지
+핵심적인 내용만 3~5개 설명하세요.
+
 
 ### 💡 사용 팁
 
-이 프롬프트를 더 좋은 결과로 사용하기 위한
-간단한 팁을 1~3개 제공합니다.
+이 프롬프트를 사용할 때 도움이 되는
+간단한 팁을 1~3개 작성하세요.
 
-
-## 중요한 규칙
-
-최종 프롬프트는 반드시 독립적으로 사용할 수 있어야 합니다.
-
-즉, 사용자가 이 결과를 그대로 복사해서
-다른 AI에게 입력해도 충분히 이해할 수 있어야 합니다.
-
-사용자가 제공하지 않은 사실을 사실처럼 단정하지 마세요.
-
-필요한 정보가 있다면 다음과 같이 표현하세요.
-
-"[사용자가 제공해야 할 정보]"
-
-또는
-
-"정보가 없는 경우 합리적인 가정을 명시하고 진행하세요."
-
-답변은 {output_language}로 작성하세요.
+불필요하게 장황하게 설명하지 마세요.
 """
 
 
-# --------------------------------------------------
-# 세션 초기화
-# --------------------------------------------------
+# ==================================================
+# EXPAND BUTTON
+# ==================================================
 
-if "messages" not in st.session_state:
+st.markdown("<div style='height:18px'></div>", unsafe_allow_html=True)
 
-    st.session_state.messages = [
-        {
-            "role": "assistant",
-            "content": """
-안녕하세요! 👋
-
-저는 **AI Prompt Expander**입니다.
-
-사용자가 작성한 프롬프트를 분석해서
-AI가 더 정확하게 이해할 수 있는 프롬프트로 확장해드립니다.
-
-예를 들어:
-
-**입력**
-> 유튜브 영상 아이디어 만들어줘
-
-↓
-
-**확장**
-> 당신은 유튜브 콘텐츠 기획 전문가입니다.
-> 20~30대 직장인을 대상으로...
-> ...
-> 10개의 영상 아이디어를 표 형태로 제시하세요.
-
-짧게 작성해도 괜찮습니다.
-
-원하는 작업을 자유롭게 입력해주세요. ✨
-"""
-        }
-    ]
-
-
-# --------------------------------------------------
-# 기존 대화 출력
-# --------------------------------------------------
-
-for message in st.session_state.messages:
-
-    with st.chat_message(message["role"]):
-        st.markdown(message["content"])
-
-
-# --------------------------------------------------
-# 사용자 프롬프트
-# --------------------------------------------------
-
-prompt = st.chat_input(
-    "확장하고 싶은 프롬프트를 입력해주세요..."
+expand_button = st.button(
+    "✨ 프롬프트 확장하기"
 )
 
 
-if prompt:
+# ==================================================
+# API REQUEST
+# ==================================================
 
-    # 사용자 메시지 저장
-    st.session_state.messages.append(
-        {
-            "role": "user",
-            "content": prompt
-        }
-    )
+if expand_button:
 
-    # 사용자 입력 출력
-    with st.chat_message("user"):
-        st.markdown(prompt)
+    if not user_prompt.strip():
 
-
-    # --------------------------------------------------
-    # OpenAI API
-    # --------------------------------------------------
-
-    stream = client.responses.create(
-
-        model="gpt-5.6-terra",
-
-        instructions=SYSTEM_PROMPT,
-
-        input=[
-            {
-                "role": message["role"],
-                "content": message["content"]
-            }
-            for message in st.session_state.messages
-        ],
-
-        stream=True
-    )
-
-
-    # --------------------------------------------------
-    # Streaming Generator
-    # --------------------------------------------------
-
-    def response_generator():
-
-        for event in stream:
-
-            if event.type == "response.output_text.delta":
-                yield event.delta
-
-
-    # --------------------------------------------------
-    # AI 응답
-    # --------------------------------------------------
-
-    with st.chat_message("assistant"):
-
-        response = st.write_stream(
-            response_generator()
+        st.warning(
+            "먼저 확장할 프롬프트를 입력해주세요."
         )
 
+    else:
 
-    # --------------------------------------------------
-    # 응답 저장
-    # --------------------------------------------------
+        with st.spinner("AI가 프롬프트를 분석하고 있습니다..."):
 
-    st.session_state.messages.append(
-        {
-            "role": "assistant",
-            "content": response
-        }
+            try:
+
+                response = client.responses.create(
+
+                    model="gpt-5.6-terra",
+
+                    instructions=SYSTEM_PROMPT,
+
+                    input=user_prompt
+
+                )
+
+                result = response.output_text
+
+                st.session_state["result"] = result
+
+            except Exception as e:
+
+                st.error(
+                    f"오류가 발생했습니다: {str(e)}"
+                )
+
+
+# ==================================================
+# RESULT
+# ==================================================
+
+if "result" in st.session_state:
+
+    st.markdown("""
+    <div class="card">
+
+        <div class="result-header">
+
+            <div class="result-icon">
+                ✨
+            </div>
+
+            <div class="result-title">
+                확장된 프롬프트
+                <span class="badge">
+                    AI Optimized
+                </span>
+            </div>
+
+        </div>
+
+    </div>
+    """, unsafe_allow_html=True)
+
+    st.markdown(
+        st.session_state["result"]
     )
+
+
+# ==================================================
+# EXAMPLE
+# ==================================================
+
+st.markdown("<br>", unsafe_allow_html=True)
+
+st.markdown("""
+<div class="card">
+
+    <div class="card-title">
+        💡 이렇게 입력해보세요
+    </div>
+
+    <div class="card-description">
+        완벽하게 작성할 필요가 없습니다.
+        핵심적인 아이디어만 적어주세요.
+    </div>
+
+    <div class="example">
+        "AI 스타트업 사업계획서 만들어줘"
+    </div>
+
+    <div class="example">
+        "20대 여성을 위한 화장품 브랜드 이름 추천해줘"
+    </div>
+
+    <div class="example">
+        "우리 앱의 마케팅 전략을 만들어줘"
+    </div>
+
+    <div class="example">
+        "이 논문을 초보자도 이해할 수 있게 설명해줘"
+    </div>
+
+</div>
+""", unsafe_allow_html=True)
+
+
+# ==================================================
+# FOOTER
+# ==================================================
+
+st.markdown("""
+<div style="
+    text-align:center;
+    color:#52525b;
+    font-size:12px;
+    margin-top:50px;
+">
+    Promptly AI · Turn simple ideas into powerful prompts.
+</div>
+""", unsafe_allow_html=True)
