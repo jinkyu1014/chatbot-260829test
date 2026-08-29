@@ -22,7 +22,7 @@ st.markdown("""
 <style>
 
 /* ==================================================
-   기본
+   전체 화면
 ================================================== */
 
 .stApp {
@@ -37,6 +37,11 @@ st.markdown("""
     color: #f4f4f5;
 }
 
+
+/* ==================================================
+   메인 컨테이너
+================================================== */
+
 .block-container {
     max-width: 980px;
     padding-top: 28px;
@@ -45,7 +50,7 @@ st.markdown("""
 
 
 /* ==================================================
-   전체 텍스트 가독성
+   전체 텍스트
 ================================================== */
 
 p,
@@ -81,6 +86,7 @@ small {
     border-radius: 999px;
 
     background: rgba(139, 92, 246, 0.12);
+
     border: 1px solid rgba(139, 92, 246, 0.28);
 
     color: #c4b5fd;
@@ -98,6 +104,7 @@ small {
     line-height: 1.1;
 
     font-weight: 800;
+
     letter-spacing: -2px;
 
     background: linear-gradient(
@@ -117,12 +124,13 @@ small {
     color: #a1a1aa;
 
     font-size: 16px;
+
     line-height: 1.75;
 }
 
 
 /* ==================================================
-   공통 카드
+   카드
 ================================================== */
 
 .input-card,
@@ -153,6 +161,7 @@ small {
     color: #fafafa;
 
     font-size: 19px;
+
     font-weight: 750;
 
     margin-bottom: 4px;
@@ -163,6 +172,7 @@ small {
     color: #a1a1aa !important;
 
     font-size: 13px;
+
     line-height: 1.6;
 }
 
@@ -181,6 +191,7 @@ textarea {
     border-radius: 12px !important;
 
     font-size: 15px !important;
+
     line-height: 1.75 !important;
 
     padding: 16px !important;
@@ -240,6 +251,7 @@ section[data-testid="stSidebar"] h2 {
     color: #fafafa;
 
     font-size: 20px;
+
     font-weight: 750;
 }
 
@@ -247,6 +259,7 @@ section[data-testid="stSidebar"] h3 {
     color: #e4e4e7;
 
     font-size: 14px;
+
     font-weight: 650;
 
     margin-top: 18px;
@@ -264,7 +277,7 @@ section[data-testid="stSidebar"] hr {
 
 
 /* ==================================================
-   확장 옵션
+   확장 옵션 카드
 ================================================== */
 
 .option-card {
@@ -283,6 +296,7 @@ section[data-testid="stSidebar"] hr {
     color: #71717a;
 
     font-size: 12px;
+
     font-weight: 600;
 
     margin-bottom: 5px;
@@ -292,6 +306,7 @@ section[data-testid="stSidebar"] hr {
     color: #f4f4f5;
 
     font-size: 15px;
+
     font-weight: 700;
 }
 
@@ -324,6 +339,7 @@ section[data-testid="stSidebar"] hr {
     color: #ffffff;
 
     font-size: 15px;
+
     font-weight: 750;
 
     letter-spacing: -0.1px;
@@ -352,7 +368,7 @@ section[data-testid="stSidebar"] hr {
 
 
 /* ==================================================
-   결과
+   결과 카드
 ================================================== */
 
 .result-container {
@@ -371,9 +387,6 @@ section[data-testid="stSidebar"] hr {
         0 18px 50px rgba(0,0,0,0.24);
 }
 
-
-/* 결과 내부 Markdown */
-
 .result-container h3 {
     margin-top: 0;
 }
@@ -382,6 +395,7 @@ section[data-testid="stSidebar"] hr {
     color: #c4b5fd;
 
     font-size: 15px;
+
     margin-top: 24px;
 }
 
@@ -389,6 +403,7 @@ section[data-testid="stSidebar"] hr {
     color: #d4d4d8;
 
     font-size: 14px;
+
     line-height: 1.75;
 }
 
@@ -396,6 +411,7 @@ section[data-testid="stSidebar"] hr {
     color: #d4d4d8;
 
     font-size: 14px;
+
     line-height: 1.7;
 
     margin-bottom: 5px;
@@ -413,7 +429,7 @@ section[data-testid="stSidebar"] hr {
 
 
 /* ==================================================
-   예시 영역
+   예시
 ================================================== */
 
 .example-box {
@@ -511,7 +527,7 @@ hr {
 
 
 /* ==================================================
-   Streamlit 기본 UI 제거
+   Streamlit 기본 UI
 ================================================== */
 
 #MainMenu {
@@ -647,7 +663,9 @@ st.markdown(
     unsafe_allow_html=True
 )
 
-st.markdown("### 📝 원본 프롬프트")
+st.markdown(
+    "### 📝 원본 프롬프트"
+)
 
 st.caption(
     "AI에게 원하는 작업을 자유롭게 작성해주세요. "
@@ -680,7 +698,7 @@ st.markdown(
 
 
 # ==================================================
-# 설정 표시
+# 확장 옵션 표시
 # ==================================================
 
 st.markdown("### ⚙️ 확장 옵션")
@@ -692,8 +710,13 @@ with col1:
     st.markdown(
         f"""
         <div class="option-card">
-            <div class="option-label">✨ 확장 스타일</div>
-            <div class="option-value">{expansion_style}</div>
+            <div class="option-label">
+                ✨ 확장 스타일
+            </div>
+
+            <div class="option-value">
+                {expansion_style}
+            </div>
         </div>
         """,
         unsafe_allow_html=True
@@ -705,8 +728,13 @@ with col2:
     st.markdown(
         f"""
         <div class="option-card">
-            <div class="option-label">🤖 사용 AI</div>
-            <div class="option-value">{target_ai}</div>
+            <div class="option-label">
+                🤖 사용 AI
+            </div>
+
+            <div class="option-value">
+                {target_ai}
+            </div>
         </div>
         """,
         unsafe_allow_html=True
@@ -718,8 +746,13 @@ with col3:
     st.markdown(
         f"""
         <div class="option-card">
-            <div class="option-label">🌐 프롬프트 언어</div>
-            <div class="option-value">{output_language}</div>
+            <div class="option-label">
+                🌐 프롬프트 언어
+            </div>
+
+            <div class="option-value">
+                {output_language}
+            </div>
         </div>
         """,
         unsafe_allow_html=True
@@ -730,14 +763,162 @@ with col3:
 # System Prompt
 # ==================================================
 
-# ↓↓↓ 기존 SYSTEM_PROMPT 그대로 사용 ↓↓↓
+SYSTEM_PROMPT = f"""
+당신은 세계 최고 수준의 Prompt Engineer입니다.
+
+사용자가 작성한 원본 프롬프트를 분석하고,
+사용자의 원래 의도와 목적을 유지하면서
+AI가 더 정확하고 높은 품질의 결과를 생성할 수 있도록
+프롬프트를 확장하고 개선하세요.
+
+현재 설정:
+
+확장 스타일:
+{expansion_style}
+
+사용 대상 AI:
+{target_ai}
+
+출력 언어:
+{output_language}
+
+
+[핵심 원칙]
+
+1. 사용자의 원래 의도를 절대 변경하지 마세요.
+
+2. 사용자가 요청하지 않은 사실을
+   임의로 만들어내지 마세요.
+
+3. 단순한 요청에는 불필요하게
+   복잡한 프롬프트를 만들지 마세요.
+
+4. 복잡한 요청에는 필요한 정보를
+   구조적으로 보완하세요.
+
+5. 최종 프롬프트는 다른 AI에
+   그대로 복사해서 사용할 수 있어야 합니다.
+
+
+[프롬프트 구성]
+
+요청의 성격에 따라 필요한 요소를 추가하세요.
+
+- Role
+- Context
+- Goal
+- Task
+- Target Audience
+- Input
+- Process
+- Output Format
+- Constraints
+- Requirements
+- Evaluation Criteria
+- Tone
+- Style
+
+
+[부족한 정보]
+
+정보가 부족한 경우 사실을 만들어내지 마세요.
+
+필요한 경우 placeholder를 사용하세요.
+
+예:
+
+[타겟 고객]
+[예산]
+[브랜드명]
+[서비스 설명]
+[목표]
+[사용 가능한 데이터]
+[원하는 결과물]
+
+단, 불필요한 placeholder는 만들지 마세요.
+
+
+[복잡한 작업]
+
+복잡한 작업이라면 AI가 작업을
+체계적으로 수행할 수 있도록
+필요한 작업 절차를 정의하세요.
+
+예:
+
+1. 입력 정보 분석
+2. 핵심 요구사항 파악
+3. 필요한 정보 정리
+4. 결과물 작성
+5. 결과 검토
+6. 개선사항 반영
+
+모든 요청에 강제로 적용하지 말고
+필요한 경우에만 사용하세요.
+
+
+[결과물]
+
+사용자가 원하는 결과물이 있다면
+구체적인 출력 형식을 정의하세요.
+
+예:
+
+- 표
+- 목록
+- Markdown
+- JSON
+- 보고서
+- 사업계획서
+- 발표자료
+- 코드
+- 이메일
+- 광고 카피
+
+
+[출력 형식]
+
+반드시 다음 형식으로 답변하세요.
+
+
+### ✨ 확장된 프롬프트
+
+사용자가 그대로 복사해서
+다른 AI에 입력할 수 있는
+완성된 프롬프트를 작성하세요.
+
+
+### 🔍 개선된 부분
+
+원본 프롬프트에서 무엇을 개선했는지
+핵심적인 내용을 3~5개 설명하세요.
+
+
+### 💡 사용 팁
+
+이 프롬프트를 더 효과적으로 사용하기 위한
+간단한 팁을 1~3개 작성하세요.
+
+
+[중요]
+
+실제 사용자의 작업 결과를 생성하지 마세요.
+
+당신의 역할은 오직
+사용자의 프롬프트를 개선하는 것입니다.
+
+답변은 {output_language}로 작성하세요.
+"""
 
 
 # ==================================================
 # 확장 버튼
 # ==================================================
 
-st.markdown("<br>", unsafe_allow_html=True)
+st.markdown(
+    "<br>",
+    unsafe_allow_html=True
+)
 
 expand_button = st.button(
     "✨ 프롬프트 확장하기"
@@ -815,9 +996,14 @@ if "result" in st.session_state:
 # 사용 예시
 # ==================================================
 
-st.markdown("<br>", unsafe_allow_html=True)
+st.markdown(
+    "<br>",
+    unsafe_allow_html=True
+)
 
-st.markdown("### 💡 이렇게 입력해보세요")
+st.markdown(
+    "### 💡 이렇게 입력해보세요"
+)
 
 st.caption(
     "완벽하게 작성할 필요가 없습니다. "
@@ -836,7 +1022,11 @@ examples = [
 for example in examples:
 
     st.markdown(
-        f'<div class="example-box">{example}</div>',
+        f"""
+        <div class="example-box">
+            {example}
+        </div>
+        """,
         unsafe_allow_html=True
     )
 
@@ -849,9 +1039,12 @@ st.markdown(
     """
     <div class="tip">
         💡 <strong>TIP</strong><br><br>
+
         프롬프트를 완벽하게 작성할 필요가 없습니다.<br>
+
         "무엇을 만들고 싶은지"만 작성하면
-        Promptly AI가 목적, 역할, 조건, 결과물 형식 등을 분석해서 보완합니다.
+        Promptly AI가 목적, 역할, 조건,
+        결과물 형식 등을 분석해서 보완합니다.
     </div>
     """,
     unsafe_allow_html=True
