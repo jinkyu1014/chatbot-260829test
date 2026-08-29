@@ -10,47 +10,46 @@ st.set_page_config(
     page_title="Promptly AI",
     page_icon="✨",
     layout="wide",
-    initial_sidebar_state="expanded"
+    initial_sidebar_state="expanded",
 )
 
 
 # =========================================================
 # CSS
+# HTML 태그를 화면 출력에 사용하지 않고
+# Streamlit 기본 컴포넌트에만 스타일을 적용합니다.
 # =========================================================
 
 st.markdown(
     """
     <style>
 
-    /* =====================================================
+    /* ================================================
        전체 앱
-    ===================================================== */
+    ================================================ */
 
     .stApp {
         background:
             radial-gradient(
                 circle at 50% -10%,
                 rgba(124, 58, 237, 0.16),
-                transparent 36%
+                transparent 38%
             ),
             #09090b;
-
-        color: #f4f4f5;
     }
 
     .block-container {
         max-width: 980px;
-
-        padding-top: 25px;
+        padding-top: 30px;
         padding-bottom: 70px;
     }
 
 
-    /* =====================================================
+    /* ================================================
        기본 텍스트
-    ===================================================== */
+    ================================================ */
 
-    p {
+    .stMarkdown {
         color: #d4d4d8;
     }
 
@@ -59,50 +58,52 @@ st.markdown(
     }
 
 
-    /* =====================================================
-       Hero
-    ===================================================== */
+    /* ================================================
+       제목
+    ================================================ */
 
-    .hero {
+    h1 {
+        color: #ffffff !important;
+
+        font-size: 46px !important;
+
+        font-weight: 800 !important;
+
+        letter-spacing: -2px !important;
+
+        margin-bottom: 8px !important;
+    }
+
+    h2 {
+        color: #fafafa !important;
+
+        font-size: 24px !important;
+
+        font-weight: 750 !important;
+
+        letter-spacing: -0.5px !important;
+    }
+
+    h3 {
+        color: #f4f4f5 !important;
+
+        font-size: 18px !important;
+
+        font-weight: 700 !important;
+    }
+
+
+    /* ================================================
+       Hero 영역
+    ================================================ */
+
+    .hero-section {
         text-align: center;
-
-        padding:
-            42px 0
-            34px 0;
     }
 
-    .hero-badge {
-        display: inline-block;
-
-        padding:
-            7px 14px;
-
-        border-radius: 999px;
-
-        background:
-            rgba(139, 92, 246, 0.12);
-
-        border:
-            1px solid
-            rgba(139, 92, 246, 0.28);
-
-        color: #c4b5fd;
-
-        font-size: 11px;
-        font-weight: 700;
-
-        letter-spacing: 0.7px;
-    }
-
-    .hero-title {
-        margin-top: 17px;
-
-        font-size: 48px;
-        line-height: 1.1;
-
-        font-weight: 800;
-
-        letter-spacing: -2.2px;
+    .hero-section h1 {
+        margin-top: 12px !important;
+        margin-bottom: 10px !important;
 
         background:
             linear-gradient(
@@ -116,93 +117,50 @@ st.markdown(
         -webkit-text-fill-color: transparent;
     }
 
-    .hero-description {
-        margin-top: 16px;
-
-        color: #a1a1aa;
-
-        font-size: 16px;
-
-        line-height: 1.75;
+    .hero-section .stCaption {
+        font-size: 15px;
     }
 
 
-    /* =====================================================
-       섹션 제목
-    ===================================================== */
+    /* ================================================
+       Badge
+    ================================================ */
 
-    .section-heading {
-        color: #fafafa;
+    .hero-badge {
+        color: #c4b5fd !important;
 
-        font-size: 19px;
-        font-weight: 750;
+        font-size: 11px !important;
 
-        margin-bottom: 5px;
-    }
+        font-weight: 700 !important;
 
-    .section-description {
-        color: #a1a1aa;
+        letter-spacing: 0.7px !important;
 
-        font-size: 13px;
-
-        line-height: 1.65;
-
-        margin-bottom: 14px;
+        text-transform: uppercase;
     }
 
 
-    /* =====================================================
-       입력 카드
-    ===================================================== */
+    /* ================================================
+       입력 영역
+    ================================================ */
 
-    .input-card {
-        background:
-            rgba(24, 24, 27, 0.94);
-
-        border:
-            1px solid
-            rgba(255, 255, 255, 0.08);
-
-        border-radius: 18px;
-
-        padding: 26px;
-
+    [data-testid="stTextArea"] {
         margin-top: 8px;
-
-        box-shadow:
-            0 16px 45px
-            rgba(0, 0, 0, 0.20);
     }
-
-
-    /* =====================================================
-       Text Area
-    ===================================================== */
 
     textarea {
         background: #111113 !important;
 
         color: #f4f4f5 !important;
 
-        border:
-            1px solid
-            #303034 !important;
+        border: 1px solid #303034 !important;
 
-        border-radius:
-            12px !important;
+        border-radius: 12px !important;
 
-        font-size:
-            15px !important;
+        font-size: 15px !important;
 
-        line-height:
-            1.75 !important;
+        line-height: 1.75 !important;
 
-        padding:
-            16px !important;
-
-        transition:
-            border-color 0.2s ease,
-            box-shadow 0.2s ease;
+        padding: 16px !important;
     }
 
     textarea::placeholder {
@@ -210,94 +168,34 @@ st.markdown(
     }
 
     textarea:hover {
-        border-color:
-            #52525b !important;
+        border-color: #52525b !important;
     }
 
     textarea:focus {
-        border-color:
-            #8b5cf6 !important;
+        border-color: #8b5cf6 !important;
 
         box-shadow:
             0 0 0 1px #8b5cf6,
-            0 0 0 4px
-            rgba(139, 92, 246, 0.10)
-            !important;
+            0 0 0 4px rgba(139, 92, 246, 0.10) !important;
     }
 
 
-    /* =====================================================
-       옵션 카드
-    ===================================================== */
-
-    .option-card {
-        background:
-            #111113;
-
-        border:
-            1px solid
-            rgba(255, 255, 255, 0.07);
-
-        border-radius:
-            12px;
-
-        padding:
-            15px 16px;
-
-        min-height:
-            72px;
-
-        box-sizing:
-            border-box;
-    }
-
-    .option-label {
-        color: #71717a;
-
-        font-size: 12px;
-
-        font-weight: 600;
-
-        margin-bottom: 7px;
-    }
-
-    .option-value {
-        color: #f4f4f5;
-
-        font-size: 15px;
-
-        font-weight: 700;
-    }
-
-
-    /* =====================================================
-       Select Box
-    ===================================================== */
+    /* ================================================
+       Selectbox
+    ================================================ */
 
     div[data-baseweb="select"] > div {
-        background:
-            #111113 !important;
+        background: #111113 !important;
 
-        border:
-            1px solid
-            #303034 !important;
+        border: 1px solid #303034 !important;
 
-        border-radius:
-            10px !important;
-
-        min-height:
-            42px;
-    }
-
-    div[data-baseweb="select"] > div:hover {
-        border-color:
-            #52525b !important;
+        border-radius: 10px !important;
     }
 
 
-    /* =====================================================
+    /* ================================================
        버튼
-    ===================================================== */
+    ================================================ */
 
     .stButton > button {
         width: 100%;
@@ -316,7 +214,7 @@ st.markdown(
                 #8b5cf6
             );
 
-        color: white;
+        color: #ffffff;
 
         font-size: 15px;
 
@@ -332,207 +230,33 @@ st.markdown(
     }
 
     .stButton > button:hover {
-        transform:
-            translateY(-1px);
+        transform: translateY(-1px);
 
         box-shadow:
             0 12px 30px
-            rgba(124, 58, 237, 0.32);
+            rgba(124, 58, 237, 0.35);
     }
 
 
-    /* =====================================================
-       결과 카드
-    ===================================================== */
+    /* ================================================
+       정보 / 경고
+    ================================================ */
 
-    .result-card {
-        background:
-            linear-gradient(
-                180deg,
-                rgba(30, 27, 45, 0.96),
-                rgba(17, 17, 19, 0.96)
-            );
+    div[data-testid="stAlert"] {
+        border-radius: 12px;
 
-        border:
-            1px solid
-            rgba(139, 92, 246, 0.28);
-
-        border-radius:
-            18px;
-
-        padding:
-            26px;
-
-        margin-top:
-            28px;
-
-        box-shadow:
-            0 18px 50px
-            rgba(0, 0, 0, 0.24);
-    }
-
-
-    /* =====================================================
-       결과 내부
-    ===================================================== */
-
-    .result-header {
-        color: #fafafa;
-
-        font-size: 19px;
-
-        font-weight: 750;
-
-        margin-bottom: 4px;
-    }
-
-    .result-description {
-        color: #a1a1aa;
-
-        font-size: 13px;
+        border-width: 1px;
 
         line-height: 1.6;
-
-        margin-bottom: 20px;
-    }
-
-    .result-content {
-        color: #d4d4d8;
-
-        font-size: 14px;
-
-        line-height: 1.8;
-    }
-
-    .result-content h3 {
-        color: #ddd6fe;
-
-        font-size: 17px;
-
-        margin-top: 25px;
-        margin-bottom: 10px;
-    }
-
-    .result-content h4 {
-        color: #c4b5fd;
-
-        font-size: 15px;
-
-        margin-top: 20px;
-    }
-
-    .result-content p {
-        color: #d4d4d8;
-
-        line-height: 1.8;
-    }
-
-    .result-content li {
-        color: #d4d4d8;
-
-        line-height: 1.7;
-
-        margin-bottom: 5px;
-    }
-
-    .result-content code {
-        background:
-            rgba(139, 92, 246, 0.12);
-
-        color: #ddd6fe;
-
-        padding:
-            2px 6px;
-
-        border-radius:
-            5px;
     }
 
 
-    /* =====================================================
-       예시
-    ===================================================== */
-
-    .example-box {
-        background:
-            #111113;
-
-        border:
-            1px solid
-            rgba(255, 255, 255, 0.07);
-
-        border-radius:
-            10px;
-
-        padding:
-            13px 16px;
-
-        margin-bottom:
-            8px;
-
-        color:
-            #d4d4d8;
-
-        font-size:
-            13px;
-
-        line-height:
-            1.55;
-    }
-
-    .example-box:hover {
-        background:
-            #18181b;
-
-        border-color:
-            rgba(139, 92, 246, 0.25);
-    }
-
-
-    /* =====================================================
-       TIP
-    ===================================================== */
-
-    .tip {
-        margin-top:
-            28px;
-
-        padding:
-            18px 20px;
-
-        border-radius:
-            12px;
-
-        background:
-            rgba(139, 92, 246, 0.08);
-
-        border:
-            1px solid
-            rgba(139, 92, 246, 0.18);
-
-        color:
-            #c4b5fd;
-
-        font-size:
-            13px;
-
-        line-height:
-            1.75;
-    }
-
-    .tip strong {
-        color:
-            #ddd6fe;
-    }
-
-
-    /* =====================================================
+    /* ================================================
        Sidebar
-    ===================================================== */
+    ================================================ */
 
     section[data-testid="stSidebar"] {
-        background:
-            #111113;
+        background: #111113;
 
         border-right:
             1px solid
@@ -540,122 +264,178 @@ st.markdown(
     }
 
     section[data-testid="stSidebar"] h2 {
-        color:
-            #fafafa;
+        color: #fafafa !important;
 
-        font-size:
-            20px;
+        font-size: 21px !important;
     }
 
     section[data-testid="stSidebar"] h3 {
-        color:
-            #e4e4e7;
+        color: #e4e4e7 !important;
 
-        font-size:
-            14px;
+        font-size: 14px !important;
     }
 
-    section[data-testid="stSidebar"] [data-testid="stCaptionContainer"] {
-        color:
-            #8f8f98 !important;
-
-        line-height:
-            1.55;
+    section[data-testid="stSidebar"]
+    [data-testid="stCaptionContainer"] {
+        color: #8f8f98 !important;
     }
 
 
-    /* =====================================================
-       Alert
-    ===================================================== */
+    /* ================================================
+       결과 영역
+    ================================================ */
 
-    div[data-testid="stAlert"] {
-        border-radius:
-            10px;
+    .result-wrapper {
+        background:
+            rgba(17, 17, 19, 0.96);
 
-        line-height:
-            1.6;
+        border:
+            1px solid
+            rgba(139, 92, 246, 0.25);
+
+        border-radius: 16px;
+
+        padding: 22px;
+
+        margin-top: 10px;
+
+        box-shadow:
+            0 15px 45px
+            rgba(0,0,0,0.20);
     }
 
 
-    /* =====================================================
+    /* ================================================
+       Markdown 결과 가독성
+    ================================================ */
+
+    .result-wrapper h3 {
+        color: #ddd6fe !important;
+
+        margin-top: 22px;
+    }
+
+    .result-wrapper h4 {
+        color: #c4b5fd !important;
+    }
+
+    .result-wrapper p {
+        color: #d4d4d8 !important;
+
+        line-height: 1.8;
+    }
+
+    .result-wrapper li {
+        color: #d4d4d8 !important;
+
+        line-height: 1.7;
+
+        margin-bottom: 5px;
+    }
+
+    .result-wrapper code {
+        background:
+            rgba(139, 92, 246, 0.12);
+
+        color: #ddd6fe;
+
+        border-radius: 5px;
+
+        padding: 2px 6px;
+    }
+
+
+    /* ================================================
+       예시 영역
+    ================================================ */
+
+    .example-text {
+        background: #111113;
+
+        border:
+            1px solid
+            rgba(255,255,255,0.07);
+
+        border-radius: 10px;
+
+        padding: 12px 15px;
+
+        margin-bottom: 7px;
+
+        color: #d4d4d8;
+
+        font-size: 13px;
+    }
+
+
+    /* ================================================
        Footer
-    ===================================================== */
+    ================================================ */
 
-    .footer {
-        text-align:
-            center;
+    .footer-text {
+        text-align: center;
 
-        color:
-            #52525b;
+        color: #52525b;
 
-        font-size:
-            12px;
+        font-size: 12px;
 
-        margin-top:
-            50px;
+        margin-top: 45px;
     }
 
 
-    /* =====================================================
-       Streamlit 기본 UI
-    ===================================================== */
+    /* ================================================
+       Streamlit 기본 UI 제거
+    ================================================ */
 
     #MainMenu {
-        visibility:
-            hidden;
+        visibility: hidden;
     }
 
     footer {
-        visibility:
-            hidden;
+        visibility: hidden;
     }
 
     [data-testid="stToolbar"] {
-        visibility:
-            hidden;
+        visibility: hidden;
     }
 
 
-    /* =====================================================
+    /* ================================================
        모바일
-    ===================================================== */
+    ================================================ */
 
     @media (max-width: 768px) {
 
         .block-container {
-            padding-left:
-                18px;
-
-            padding-right:
-                18px;
+            padding-left: 18px;
+            padding-right: 18px;
         }
 
-        .hero {
-            padding:
-                30px 0 25px;
+        h1 {
+            font-size: 38px !important;
         }
 
-        .hero-title {
-            font-size:
-                38px;
+        h2 {
+            font-size: 21px !important;
         }
 
-        .hero-description {
-            font-size:
-                14px;
-        }
-
-        .input-card,
-        .result-card {
-            padding:
-                20px;
+        .result-wrapper {
+            padding: 18px;
         }
     }
 
     </style>
     """,
-    unsafe_allow_html=True
+    unsafe_allow_html=True,
 )
+
+
+# =========================================================
+# Session State 초기화
+# =========================================================
+
+if "result" not in st.session_state:
+    st.session_state.result = None
 
 
 # =========================================================
@@ -663,25 +443,24 @@ st.markdown(
 # =========================================================
 
 st.markdown(
-    """
-    <div class="hero">
+    '<p class="hero-badge">✨ AI PROMPT ENGINEERING</p>',
+    unsafe_allow_html=True,
+)
 
-        <div class="hero-badge">
-            ✨ AI PROMPT ENGINEERING
-        </div>
+st.markdown(
+    '<div class="hero-section">',
+    unsafe_allow_html=True,
+)
 
-        <div class="hero-title">
-            Promptly AI
-        </div>
+st.title("Promptly AI")
 
-        <div class="hero-description">
-            당신의 짧은 아이디어를<br>
-            더 정확하고 강력한 AI 프롬프트로 만들어드립니다.
-        </div>
+st.caption(
+    "당신의 짧은 아이디어를 더 정확하고 강력한 AI 프롬프트로 만들어드립니다."
+)
 
-    </div>
-    """,
-    unsafe_allow_html=True
+st.markdown(
+    "</div>",
+    unsafe_allow_html=True,
 )
 
 
@@ -691,24 +470,24 @@ st.markdown(
 
 with st.sidebar:
 
-    st.markdown("## ⚙️ 설정")
+    st.header("⚙️ 설정")
 
-    st.markdown("### 🔑 OpenAI API Key")
+    st.subheader("🔑 OpenAI API Key")
 
     openai_api_key = st.text_input(
         "OpenAI API Key",
         type="password",
         placeholder="sk-...",
-        label_visibility="collapsed"
+        label_visibility="collapsed",
     )
 
     st.caption(
-        "API Key는 이 앱의 코드에 저장되지 않습니다."
+        "입력한 API Key는 코드에 저장되지 않습니다."
     )
 
     st.divider()
 
-    st.markdown("### ✨ 확장 설정")
+    st.subheader("✨ 확장 설정")
 
     expansion_style = st.selectbox(
         "확장 스타일",
@@ -717,9 +496,8 @@ with st.sidebar:
             "간결하게",
             "상세하게",
             "전문적으로",
-            "실행 중심"
+            "실행 중심",
         ],
-        index=0
     )
 
     target_ai = st.selectbox(
@@ -728,18 +506,16 @@ with st.sidebar:
             "범용 AI",
             "ChatGPT",
             "Claude",
-            "Gemini"
+            "Gemini",
         ],
-        index=0
     )
 
     output_language = st.selectbox(
         "프롬프트 언어",
         [
             "한국어",
-            "English"
+            "English",
         ],
-        index=0
     )
 
 
@@ -824,7 +600,7 @@ AI가 더 정확하고 높은 품질의 결과를 생성할 수 있도록
 
 [복잡한 작업]
 
-복잡한 작업이라면 AI가 작업을
+복잡한 요청이라면 AI가 작업을
 체계적으로 수행할 수 있도록
 필요한 작업 절차를 정의하세요.
 
@@ -896,84 +672,56 @@ AI가 더 정확하고 높은 품질의 결과를 생성할 수 있도록
 
 
 # =========================================================
-# API Key 확인
+# API Client
+# =========================================================
+
+client = None
+
+if openai_api_key:
+
+    try:
+
+        client = OpenAI(
+            api_key=openai_api_key
+        )
+
+    except Exception as e:
+
+        st.error(
+            "OpenAI 클라이언트를 초기화하지 못했습니다."
+        )
+
+        st.code(
+            str(e),
+            language="text"
+        )
+
+
+# =========================================================
+# API Key 안내
 # =========================================================
 
 if not openai_api_key:
 
     st.info(
-        "🔑 왼쪽 사이드바에서 OpenAI API Key를 입력하면 "
-        "프롬프트 확장 기능을 사용할 수 있습니다."
+        "🔑 왼쪽 사이드바에서 OpenAI API Key를 입력해주세요."
     )
-
-    st.markdown(
-        """
-        <div class="tip">
-
-        💡 <strong>사용 방법</strong><br><br>
-
-        1. 왼쪽에서 API Key를 입력합니다.<br>
-        2. 확장 스타일과 사용할 AI를 선택합니다.<br>
-        3. 원하는 작업을 간단하게 입력합니다.<br>
-        4. "프롬프트 확장하기"를 클릭합니다.
-
-        </div>
-        """,
-        unsafe_allow_html=True
-    )
-
-    st.stop()
-
-
-# =========================================================
-# OpenAI Client
-# =========================================================
-
-try:
-
-    client = OpenAI(
-        api_key=openai_api_key
-    )
-
-except Exception as e:
-
-    st.error(
-        "OpenAI Client를 초기화하지 못했습니다."
-    )
-
-    st.caption(
-        f"오류 내용: {str(e)}"
-    )
-
-    st.stop()
 
 
 # =========================================================
 # 원본 프롬프트
 # =========================================================
 
-st.markdown(
-    """
-    <div class="input-card">
+st.header("📝 원본 프롬프트")
 
-        <div class="section-heading">
-            📝 원본 프롬프트
-        </div>
-
-        <div class="section-description">
-            AI에게 원하는 작업을 자유롭게 작성해주세요.
-            완벽하게 작성할 필요가 없습니다.
-        </div>
-
-    </div>
-    """,
-    unsafe_allow_html=True
+st.caption(
+    "AI에게 원하는 작업을 자유롭게 작성해주세요. "
+    "완벽하게 작성할 필요가 없습니다."
 )
-
 
 user_prompt = st.text_area(
     "원본 프롬프트",
-    height=210,
+    height=220,
     placeholder="""예시:
 
 유튜브 영상 아이디어 만들어줘
@@ -988,94 +736,37 @@ user_prompt = st.text_area(
 20대 여성을 위한 화장품 브랜드
 이름을 추천해줘""",
     label_visibility="collapsed",
-    key="user_prompt"
+    key="user_prompt",
 )
 
 
 # =========================================================
-# 확장 옵션
+# 확장 옵션 표시
 # =========================================================
 
-st.markdown(
-    "<br>",
-    unsafe_allow_html=True
-)
-
-st.markdown(
-    """
-    <div class="section-heading">
-        ⚙️ 확장 옵션
-    </div>
-
-    <div class="section-description">
-        현재 선택된 설정입니다.
-        실제 변경은 왼쪽 사이드바에서 할 수 있습니다.
-    </div>
-    """,
-    unsafe_allow_html=True
-)
-
+st.subheader("⚙️ 현재 확장 옵션")
 
 col1, col2, col3 = st.columns(3)
 
-
 with col1:
 
-    st.markdown(
-        f"""
-        <div class="option-card">
-
-            <div class="option-label">
-                ✨ 확장 스타일
-            </div>
-
-            <div class="option-value">
-                {expansion_style}
-            </div>
-
-        </div>
-        """,
-        unsafe_allow_html=True
+    st.metric(
+        label="✨ 확장 스타일",
+        value=expansion_style,
     )
-
 
 with col2:
 
-    st.markdown(
-        f"""
-        <div class="option-card">
-
-            <div class="option-label">
-                🤖 사용 AI
-            </div>
-
-            <div class="option-value">
-                {target_ai}
-            </div>
-
-        </div>
-        """,
-        unsafe_allow_html=True
+    st.metric(
+        label="🤖 사용 AI",
+        value=target_ai,
     )
-
 
 with col3:
 
-    st.markdown(
-        f"""
-        <div class="option-card">
-
-            <div class="option-label">
-                🌐 프롬프트 언어
-            </div>
-
-            <div class="option-value">
-                {output_language}
-            </div>
-
-        </div>
-        """,
-        unsafe_allow_html=True
+    st.metric(
+        label="🌐 언어",
+        value=output_language,
     )
 
 
@@ -1083,14 +774,11 @@ with col3:
 # 실행 버튼
 # =========================================================
 
-st.markdown(
-    "<br>",
-    unsafe_allow_html=True
-)
+st.write("")
 
 expand_button = st.button(
     "✨ 프롬프트 확장하기",
-    use_container_width=True
+    use_container_width=True,
 )
 
 
@@ -1100,11 +788,19 @@ expand_button = st.button(
 
 if expand_button:
 
-    # -----------------------------------------------------
-    # 입력값 검사
-    # -----------------------------------------------------
+    if not openai_api_key:
 
-    if not user_prompt.strip():
+        st.error(
+            "🔑 먼저 왼쪽 사이드바에 OpenAI API Key를 입력해주세요."
+        )
+
+    elif client is None:
+
+        st.error(
+            "OpenAI 클라이언트를 사용할 수 없습니다."
+        )
+
+    elif not user_prompt.strip():
 
         st.warning(
             "📝 먼저 확장하고 싶은 프롬프트를 입력해주세요."
@@ -1112,14 +808,8 @@ if expand_button:
 
     else:
 
-        # 이전 결과 제거
-        if "result" in st.session_state:
-
-            del st.session_state["result"]
-
-        # -------------------------------------------------
-        # API 호출
-        # -------------------------------------------------
+        # 이전 결과 삭제
+        st.session_state.result = None
 
         with st.spinner(
             "✨ AI가 프롬프트를 분석하고 있습니다..."
@@ -1130,25 +820,21 @@ if expand_button:
                 response = client.responses.create(
                     model="gpt-5.6-terra",
                     instructions=SYSTEM_PROMPT,
-                    input=user_prompt.strip()
+                    input=user_prompt.strip(),
                 )
 
                 result = response.output_text
 
-                # 응답 검사
-                if not result or not result.strip():
+                if result and result.strip():
+
+                    st.session_state.result = result
+
+                else:
 
                     st.error(
                         "AI가 빈 응답을 반환했습니다. "
                         "잠시 후 다시 시도해주세요."
                     )
-
-                else:
-
-                    st.session_state["result"] = result
-
-                    # 화면 새로고침 없이 아래 결과 표시
-
 
             except Exception as e:
 
@@ -1158,7 +844,7 @@ if expand_button:
 
                 st.code(
                     str(e),
-                    language="text"
+                    language="text",
                 )
 
 
@@ -1166,38 +852,29 @@ if expand_button:
 # 결과
 # =========================================================
 
-if "result" in st.session_state:
+if st.session_state.result:
 
-    st.markdown(
-        """
-        <div class="result-card">
+    st.divider()
 
-            <div class="result-header">
-                ✨ 확장된 프롬프트
-            </div>
+    st.header("✨ 확장된 프롬프트")
 
-            <div class="result-description">
-                AI가 원본 프롬프트의 의도를 분석하고
-                더 명확한 형태로 구조화했습니다.
-            </div>
-
-        </div>
-        """,
-        unsafe_allow_html=True
+    st.caption(
+        "AI가 원본 프롬프트의 의도를 분석하고 "
+        "더 명확한 형태로 구조화했습니다."
     )
 
     st.markdown(
-        '<div class="result-content">',
-        unsafe_allow_html=True
+        '<div class="result-wrapper">',
+        unsafe_allow_html=True,
     )
 
     st.markdown(
-        st.session_state["result"]
+        st.session_state.result
     )
 
     st.markdown(
-        '</div>',
-        unsafe_allow_html=True
+        "</div>",
+        unsafe_allow_html=True,
     )
 
 
@@ -1205,23 +882,13 @@ if "result" in st.session_state:
 # 사용 예시
 # =========================================================
 
-st.markdown(
-    "<br><br>",
-    unsafe_allow_html=True
-)
+st.divider()
 
-st.markdown(
-    """
-    <div class="section-heading">
-        💡 이렇게 입력해보세요
-    </div>
+st.header("💡 이렇게 입력해보세요")
 
-    <div class="section-description">
-        완벽하게 작성할 필요가 없습니다.
-        원하는 작업만 간단하게 적어주세요.
-    </div>
-    """,
-    unsafe_allow_html=True
+st.caption(
+    "완벽하게 작성할 필요가 없습니다. "
+    "원하는 작업만 간단하게 적어주세요."
 )
 
 
@@ -1230,19 +897,15 @@ examples = [
     "스타트업 투자용 PPT 만들어줘",
     "20대 여성을 위한 화장품 브랜드 이름 추천해줘",
     "이 논문을 초보자도 이해할 수 있게 설명해줘",
-    "우리 서비스의 마케팅 전략을 만들어줘"
+    "우리 서비스의 마케팅 전략을 만들어줘",
 ]
 
 
 for example in examples:
 
     st.markdown(
-        f"""
-        <div class="example-box">
-            {example}
-        </div>
-        """,
-        unsafe_allow_html=True
+        f'<p class="example-text">{example}</p>',
+        unsafe_allow_html=True,
     )
 
 
@@ -1250,21 +913,11 @@ for example in examples:
 # TIP
 # =========================================================
 
-st.markdown(
-    """
-    <div class="tip">
-
-        💡 <strong>TIP</strong><br><br>
-
-        프롬프트를 완벽하게 작성할 필요가 없습니다.<br>
-
-        "무엇을 만들고 싶은지"만 작성하면
-        Promptly AI가 목적, 역할, 조건,
-        결과물 형식 등을 분석해서 보완합니다.
-
-    </div>
-    """,
-    unsafe_allow_html=True
+st.info(
+    "💡 TIP\n\n"
+    "프롬프트를 완벽하게 작성할 필요가 없습니다. "
+    '"무엇을 만들고 싶은지"만 작성하면 '
+    "Promptly AI가 목적, 역할, 조건, 결과물 형식 등을 분석해서 보완합니다."
 )
 
 
@@ -1272,11 +925,6 @@ st.markdown(
 # Footer
 # =========================================================
 
-st.markdown(
-    """
-    <div class="footer">
-        Promptly AI · Turn simple ideas into powerful prompts.
-    </div>
-    """,
-    unsafe_allow_html=True
+st.caption(
+    "Promptly AI · Turn simple ideas into powerful prompts."
 )
